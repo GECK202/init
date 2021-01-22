@@ -1,0 +1,4 @@
+1. get server ip address slash16.org
+2. get info about this ip - this may containing info about provider
+this command get info about provider for site slash16.org:
+whois $(host slash16.org | grep address | head -1 | awk '{print $4}') | grep Organization | awk '{print $2}' | head -1
