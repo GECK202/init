@@ -1,0 +1,2 @@
+tail -f /var/log/syslog
+# for view background process use command 'jobs -l'
