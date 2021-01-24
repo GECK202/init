@@ -1,0 +1,2 @@
+su -l $1
+ssh user@host
