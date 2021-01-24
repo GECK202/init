@@ -1,0 +1,1 @@
+printf "| %-22s| %-6s| %-30s|\n|%-23s|%-7s|%-31s|\n" LOGIN PID PATH - - -; awk -F':' '{printf "| %-22s| %-6s| %-30s|\n",$1,$3,$6}' /etc/passwd 
