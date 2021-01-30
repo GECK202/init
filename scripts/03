@@ -1,21 +1,65 @@
-#!/bin/bash
-Fore=255
-Back=0
-if [ "$2" = "Red" ]
-then
-#	printf "\e[48;5;${Back}m \e[38;5;${Fore}m"
-	Back=128
-fi
+#First optional argument is the directory for display. Current directory by default.
+#Second optional argument - background color. White by defaul.
+#Third optional argument - text color. Black by default.
+#Avaliable colors: black, red, green, yellow, blue, magente, cian and white.
 
-doit(){
-	printf "\e[48;5;${Back}m \e[38;5;${Fore}m %s %s %s\n\e[0m" $1 $2 $3
+Fore=0
+Back=7
+
+function selectColor()
+{
+local __res
+case $1 in
+	BLACK | Black | black)
+		__res=0
+		;;
+	RED | Red | red)
+		__res=1
+		;;
+	GREEN | Green | green)
+		__res=2
+		;;
+	YELLOW | Yellow | yellow)
+		__res=3
+		;;
+	BLUE | Blue | blue)
+		__res=4
+		;;
+	MAGENTA | Magenta | magenta)
+		__res=5
+		;;
+	CIAN | Cian | cian)
+		__res=6
+		;;
+	WHITE | White | white)
+		__res=7
+		;;
+	*)
+		if [ $2=Back ]
+		then
+			__res=0
+		else
+			__res=7
+		fi
+		;;
+esac
+echo $__res 
 }
-
+if [ $2 ]
+then
+	Back=$(selectColor $2 Back)
+fi
+if [ $3 ]
+then
+	Fore=$(selectColor $3 Fore)
+fi
+printf "\e[4${Back}m\e[3${Fore}m\n"
 ls -lh $1 | awk 'BEGIN{printf "%-5s %-26s %-10s\n", "", "NAME", "SIZE"}
 {
-	if ($1 != "total") {
+    if ($3 != "") {
 	FILE = "📄";
 	DIR = "📁";
+	LINK= "🏷 ";
 	PROG = "💾";
 	A = FILE;
 	B = substr($1,1,1);
@@ -23,8 +67,10 @@ ls -lh $1 | awk 'BEGIN{printf "%-5s %-26s %-10s\n", "", "NAME", "SIZE"}
 	B2 = substr($1,7,1);
 	B3 = substr($1,10,1);
 	if (B=="d") A = DIR;
+	if (B=="l") A = LINK;
 	if (B=="-" && (B1 == "x" || B2 == "x" || B3 == "x")) A = PROG;
-		system("printf {%s %s %s\n} A $9 $7);
-	}
+	printf "%-3s - %-25s -  %-10s\n", A, $9, $5;
+	system(clean22);
+    }
 }'
-printf "\e[0m"
+printf "\e[0m\n"
