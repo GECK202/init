@@ -1,1 +1,1 @@
-ifconfig | awk '/inet/ && /broadcast/{print $2}'
+ifconfig | awk '/broadcast/ {print $2}'
